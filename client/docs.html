@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZeroTrace Docs</title><meta name="description" content="How ZeroTrace works: the Vault, ghosts, stealth launches, the Fair Window, the guard, the Trace scanner and $ZERO.">
+<link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/style.css">
+<style>.doc{max-width:780px;margin:0 auto;padding:70px 28px 120px}.doc h1{font-weight:200;font-size:clamp(46px,8vw,96px);letter-spacing:-.045em;line-height:.95}.doc h2{font-weight:300;font-size:32px;letter-spacing:-.02em;margin:70px 0 14px;padding-top:26px;border-top:1px solid var(--rule)}.doc h3{font-weight:600;font-size:17px;margin:26px 0 6px}.doc p,.doc li{color:var(--ink2);margin-top:10px}.doc ul{padding-left:20px}.doc code{font:13px ui-monospace,Menlo,monospace;background:var(--paper2);padding:2px 6px;border-radius:3px;color:var(--ink)}.doc pre{font:13px/1.6 ui-monospace,Menlo,monospace;background:var(--paper2);padding:16px;border-radius:4px;overflow-x:auto;margin-top:12px;color:var(--ink)}.doc table{width:100%;border-collapse:collapse;margin-top:14px;font-size:15px}.doc td,.doc th{text-align:left;padding:10px 8px 10px 0;border-bottom:1px solid var(--rule)}.doc th{font-weight:400;color:var(--ghost);font-size:13px}.toc{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:30px;font-size:14px}.toc a{color:var(--ghost)}.toc a:hover{color:var(--ink)}@media(max-width:860px){.doc{padding:50px 16px 90px}}</style>
+</head><body>
+<header class="top"><div class="wrap"><a class="mark" href="/"><svg viewBox="0 0 40 40" fill="none"><path d="M20 4a16 16 0 1 1-15.4 11.6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="6.6" cy="10.6" r="1.5" fill="currentColor" opacity=".55"/><circle cx="9.6" cy="7" r="1.2" fill="currentColor" opacity=".35"/><circle cx="13.6" cy="4.9" r=".9" fill="currentColor" opacity=".18"/><path d="M11 30 29 10" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>ZeroTrace</a>
+<nav class="links" id="links"><a href="/coins">Launches</a><a href="/launch">Launch</a><a href="/vault">Vault</a><a href="/trace">Trace scanner</a><a href="/docs" class="on">Docs</a></nav><div class="sp"></div><button class="btn thin burger" onclick="document.getElementById('links').classList.toggle('open')">Menu</button><a class="btn" href="/launch">Launch</a></div></header>
+<article class="doc">
+<div class="eyebrow">Docs</div><h1>How ZeroTrace <span class="it">works.</span></h1>
+<p style="font-size:19px;margin-top:26px">ZeroTrace is a launchpad on Solana built around two problems: launches are traced back to the people behind them, and launches are sniped before retail can buy. Every part below exists to fix one of the two.</p>
+<div class="toc"><a href="#deposits">Deposits</a><a href="#vault">The Vault</a><a href="#ghosts">Ghosts</a><a href="#launch">Launching</a><a href="#window">Fair Window</a><a href="#guard">The guard</a><a href="#trading">Trading</a><a href="#trace">Trace scanner</a><a href="#zero">$ZERO</a><a href="#params">Parameters</a><a href="#api">API</a><a href="#faq">FAQ</a></div>
+
+<h2 id="deposits">Deposits</h2>
+<p>You connect Phantom (or any wallet that exposes <code>window.solana</code>) and sign one free message. That signature opens a seven-day session and is checked with ed25519 on the server; nothing that moves SOL works without it.</p>
+<p>A deposit is a plain SOL transfer that your wallet signs and sends. ZeroTrace reads the confirmed transaction from Solana and only credits it when your wallet signed it, the ZeroTrace deposit account received the SOL, and the transaction succeeded. Each signature is credited once. The minimum is 0.1 SOL.</p>
+
+<h2 id="vault">The Vault</h2>
+<p>The Vault breaks the line between the wallet you deposit from and the account you launch or trade from.</p>
+<h3>Shielding</h3>
+<p>Pick a note size: 0.1, 0.5, 1, 5 or 10 SOL. Your browser makes a random 32-byte secret and sends only a commitment:</p>
+<pre>commitment = sha256("zt|" + size + "|" + secret)</pre>
+<p>The pool stores the commitment, the size and the time, with no wallet. Your browser shows you the note, <code>zt-&lt;size&gt;-&lt;secret&gt;</code>. That note is the only copy; ZeroTrace never sees the secret until you claim.</p>
+<h3>Why fixed sizes</h3>
+<p>Every 1 SOL note looks like every other 1 SOL note. The anonymity set for a note is every unspent note of the same size, shown live on the Vault page. The bigger the set, the less a claim says about who shielded it.</p>
+<h3>Mixing time</h3>
+<p>A note has to sit in the pool for 2 minutes before it can be claimed, so a shield and a claim can't be paired by timing alone. Waiting longer, while more notes of your size arrive, makes the link weaker still.</p>
+<h3>Claiming</h3>
+<p>Claiming sends the note and a ghost key. The server recomputes the commitment, checks it is in the pool, and records a nullifier, <code>sha256("nf|" + secret)</code>, so the note can never be claimed twice. The SOL lands in the ghost. The claim request carries no wallet at all.</p>
+
+<h2 id="ghosts">Ghosts</h2>
+<p>A ghost is an account controlled by a 32-byte key that lives in your browser. The server stores only an id derived from the key, <code>"zt" + base58(sha256("ghost|" + key))</code>, never the key itself. Whoever holds the key controls the ghost, so back it up from the Vault page. You can import it on another device, or start a fresh ghost per launch.</p>
+<p>Ghosts can claim notes, launch, buy, sell and withdraw. A ghost withdrawal goes to any Solana address you paste and leaves after a random delay of 10 to 60 minutes, so the time you clicked doesn't match the time SOL arrives.</p>
+
+<h2 id="launch">Launching</h2>
+<p>A launch needs a name, a ticker and one line about the coin. It costs 0.02 SOL. There is no dev allocation: the creator starts with nothing and buys in the Fair Window like everyone else.</p>
+<ul><li><b>Stealth launch</b>, from a ghost: the coin page shows the creator as <code>ghost</code>. No wallet is attached.</li><li><b>Wallet launch</b>: the coin page shows your shortened wallet. $ZERO pass holders pay half the fee.</li></ul>
+<p>Every coin trades on a constant-product curve with 1,000,000,000 supply and a 30 SOL virtual reserve: <code>price = reserve / supply</code>, and every buy and sell keeps <code>reserve × supply</code> constant.</p>
+
+<h2 id="window">The Fair Window</h2>
+<p>Every launch opens with a sealed window of 60 seconds. During it:</p>
+<ul><li>Buys are escrowed. The coin page shows how many bids are in, never the amounts.</li><li>Each buyer can put at most 2 SOL in.</li><li>Nobody can sell.</li></ul>
+<p>When the window closes, all bids are added up and bought from the curve in one fill. That one fill has one average price, and every bidder gets tokens in proportion to their SOL. A bid placed in the first second and a bid placed in the last second get exactly the same price. There is no first block to win, so there is nothing to snipe or bundle.</p>
+
+<h2 id="guard">The guard</h2>
+<p>For 10 minutes after the window, every coin is guarded:</p>
+<ul><li>No single holder can pass 2% of the supply.</li><li>Each holder waits 3 seconds between trades.</li></ul>
+<p>Holders are tracked per wallet and per ghost. Every trade the guard refuses is counted in the public "snipes blocked" figure.</p>
+
+<h2 id="trading">Trading</h2>
+<p>Trades fill against the curve in the order they arrive. There is no public pending pool, so there is nothing for a bot to see before your trade lands and nothing to sandwich. Every trade carries your price limit (1%, 3% or 10%); if the curve has moved past it, nothing fills and nothing is charged. The trading fee is 1%.</p>
+<p>Trades show a holder tag, a short hash that stays the same for one holder on one coin. You can see that the same holder traded twice; you can't see the wallet or ghost.</p>
+
+<h2 id="trace">Trace scanner</h2>
+<p>The scanner reads any Solana address straight from Solana RPC: recent signatures, balance, the first transaction (to find who funded it), and SOL transfers in the most recent transactions (to find the wallets it deals with). It turns that into an exposure score from 0 to 100:</p>
+<table><tr><th>Signal</th><th>Max</th></tr><tr><td>Activity (transaction count)</td><td>30</td></tr><tr><td>Counterparties</td><td>25</td></tr><tr><td>A visible funding source</td><td>25</td></tr><tr><td>History older than 30 days</td><td>10</td></tr><tr><td>Visible balance</td><td>10</td></tr></table>
+<p>It's the view any onlooker, copy-trader or sniper bot already has. Run your deployer through it before you launch from it.</p>
+
+<h2 id="zero">$ZERO</h2>
+<p>$ZERO is the access pass to the private side of ZeroTrace. Holding 1,000,000 $ZERO in a connected wallet gives you:</p>
+<ul><li>Fee-free shielding (others pay 0.5% per note).</li><li>Half-price wallet launches.</li></ul>
+<p>Balances are read from Solana with <code>getTokenAccountsByOwner</code> and cached for a minute. The pass applies to wallets, because shielding is where a wallet meets the Vault. Launch, trading and Vault fees fund the protocol and the tools that come next.</p>
+
+<h2 id="params">Parameters</h2>
+<table><tr><th>Name</th><th>Value</th></tr>
+<tr><td>Note sizes</td><td>0.1 · 0.5 · 1 · 5 · 10 SOL</td></tr><tr><td>Vault fee</td><td>0.5% (0 with the pass)</td></tr><tr><td>Mixing time</td><td>2 minutes</td></tr><tr><td>Launch fee</td><td>0.02 SOL (0.01 with the pass)</td></tr><tr><td>Trading fee</td><td>1%</td></tr><tr><td>Curve</td><td>1B supply, 30 SOL virtual reserve</td></tr><tr><td>Fair Window</td><td>60 s, 2 SOL per buyer</td></tr><tr><td>Guard</td><td>10 min, 2% max per holder, 3 s cooldown</td></tr><tr><td>Ghost withdrawal delay</td><td>10 to 60 minutes, random</td></tr><tr><td>Minimum deposit</td><td>0.1 SOL</td></tr></table>
+
+<h2 id="api">API</h2>
+<pre>GET  /api/state                 coins, pool sets, counters, parameters
+GET  /api/coin/:id              one coin with trades and price curve
+GET  /api/trace?addr=           Trace scanner
+GET  /api/session?wallet=       message to sign for a session
+POST /api/account               { wallet }
+POST /api/deposit               { wallet, tx }
+POST /api/shield                { wallet, auth, size, commitment }
+POST /api/launch | buy | sell   { wallet, auth, ... }
+POST /api/claim                 { note, key }
+POST /api/g/account             { key }
+POST /api/g/launch | buy | sell { key, ... }
+POST /api/g/withdraw            { key, to, amount }</pre>
+<p>Buys and sells take <code>{ id, amount, minOut }</code>. Launches take <code>{ name, ticker, desc }</code>.</p>
+
+<h2 id="faq">FAQ</h2>
+<div class="faq">
+<details><summary>Can ZeroTrace see who launched a stealth coin?</summary><p>The server sees a shield come from a wallet and, later, a claim into a ghost, with no shared field between them. The pool keeps commitments and nullifiers, which are different hashes of the secret, so the server can't match a claim to a shield either. What links them is timing and size, which is why notes have fixed sizes and a mixing time, and why waiting longer helps.</p></details>
+<details><summary>What if I lose my note?</summary><p>The note is the only copy of the secret. If it's lost before you claim it, the SOL in it can't be claimed. Copy it the moment you shield, or press "Put it in the claim box" and claim it from the same browser.</p></details>
+<details><summary>What if I lose my ghost key?</summary><p>The ghost and everything in it go with the key. Back it up from the Vault page, and use the import button to restore it on another device.</p></details>
+<details><summary>How does the Fair Window stop snipers?</summary><p>A sniper wins by buying before everyone else at a lower price. In the window there is no "before": every bid fills in one batch at one price, and each buyer is capped at 2 SOL. After the window, the guard caps holders at 2% and spaces their trades 3 seconds apart, which breaks the rapid buy loops bundlers use.</p></details>
+<details><summary>Can a bot just use lots of wallets?</summary><p>It can split across wallets, and each wallet is capped. Splitting doesn't buy a better price, though, because everyone in the window gets the same one. The cap makes a large position cost more wallets and more SOL with no price edge.</p></details>
+<details><summary>Where do my deposits sit?</summary><p>Deposits are SOL transfers to the ZeroTrace deposit account on Solana, checked on-chain before they're credited. Balances, notes, ghosts and coins are tracked in the ZeroTrace ledger. Withdrawals are queued and sent from the deposit account to the address you choose.</p></details>
+<details><summary>Why do ghost withdrawals take 10 to 60 minutes?</summary><p>If SOL arrived the second you clicked, the arrival time would link the ghost to whoever was online at that moment. A random delay removes that link.</p></details>
+<details><summary>What does the Trace scanner score mean?</summary><p>It's how easy the wallet is to follow. Above 70, its funding, counterparties and history are all visible. Below 15, there's very little to go on. A wallet you plan to launch from should score low, or not be used at all: launch from a ghost instead.</p></details>
+<details><summary>What does $ZERO do?</summary><p>It's the pass. Holders shield fee-free and launch at half price, and protocol fees fund new privacy and anti-MEV tools.</p></details>
+<details><summary>Risks</summary><p>Memecoins are volatile and most go to zero. Privacy depends on how you use it: shielding and claiming within seconds, or using odd amounts, makes links easier to guess. Keep your notes and ghost keys safe; nobody can recover them for you.</p></details>
+</div>
+</article>
+<footer><div class="wrap"><div>ZeroTrace · $ZERO · Zero Trace. Zero Snipe.</div><div style="display:flex;gap:22px"><a href="/">Home</a><a href="https://x.com/ZeroTraceSOL" target="_blank" rel="noopener">X</a></div></div></footer>
+<script>try{const t=localStorage.getItem('zt_theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</body></html>

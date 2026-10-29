@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZeroTrace · $ZERO</title>
+<meta name="description" content="The privacy launchpad and anti-sniper suite on Solana. Shielded liquidity. Unlinked launches. Zero Trace. Zero Snipe.">
+<meta property="og:title" content="ZeroTrace · $ZERO"><meta property="og:description" content="The privacy launchpad and anti-sniper suite on Solana."><meta property="og:image" content="/brand/zerotrace-og.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/style.css">
+</head><body>
+<header class="top"><div class="wrap">
+  <a class="mark" href="/" data-go="home"><svg viewBox="0 0 40 40" fill="none"><path d="M20 4a16 16 0 1 1-15.4 11.6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="6.6" cy="10.6" r="1.5" fill="currentColor" opacity=".55"/><circle cx="9.6" cy="7" r="1.2" fill="currentColor" opacity=".35"/><circle cx="13.6" cy="4.9" r=".9" fill="currentColor" opacity=".18"/><path d="M11 30 29 10" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>ZeroTrace</a>
+  <nav class="links" id="links"><a href="/coins" data-go="coins">Launches</a><a href="/launch" data-go="launch">Launch</a><a href="/vault" data-go="vault">Vault</a><a href="/trace" data-go="trace">Trace scanner</a><a href="/docs">Docs</a><a href="https://x.com/ZeroTraceSOL" target="_blank" rel="noopener">X</a></nav>
+  <div class="sp"></div>
+  <button class="btn thin burger" onclick="document.getElementById('links').classList.toggle('open')">Menu</button>
+  <button class="btn cn" id="connect">Connect</button>
+</div></header>
+
+<main>
+<!-- HOME -->
+<section class="view on" data-view="home">
+  <div class="wrap hero"><canvas id="dots"></canvas>
+    <div class="eyebrow">ZeroTrace · $ZERO · Solana</div>
+    <h1 style="margin-top:22px">Launch<br>without a <span class="fade">trace.</span></h1>
+    <p class="lede">The privacy launchpad and anti-sniper suite on Solana. Shielded liquidity. Unlinked launches. Every buyer in the first minute gets the same price. <span class="it">Retail wins, bots lose.</span></p>
+    <div class="cta"><a class="btn solid" href="/launch" data-go="launch">Launch a coin</a><a class="btn" href="/vault" data-go="vault">Open the Vault</a><a class="btn thin" href="/trace" data-go="trace">Scan a wallet</a></div>
+    <div class="ca" id="cabar" title="copy"><span>$ZERO</span><code id="ca">launching on pump.fun</code></div>
+  </div>
+  <div class="wrap sec">
+    <div class="eyebrow">The problem</div>
+    <h2>Every launch on Solana<br>is <span class="it">watched.</span></h2>
+    <p class="sub">Your deployer wallet is funded from somewhere, and that somewhere is public. Bundlers buy in the first block. Snipers land before your community reads the ticker. Copy-traders follow your wallet into every coin you touch.</p>
+    <div class="rows">
+      <div class="row"><span class="n">01</span><h3>Unlinked launches</h3><p>Shield SOL into the Vault, claim it into a ghost account, launch from the ghost. The coin shows no wallet, because there isn't one attached.</p></div>
+      <div class="row"><span class="n">02</span><h3>The Fair Window</h3><p>Every launch opens sealed for <b id="pWin">60</b> seconds. Buys are escrowed, capped at <b id="pCap">2</b> SOL a buyer, then all fill together at one clearing price. Block zero is worth nothing.</p></div>
+      <div class="row"><span class="n">03</span><h3>The guard</h3><p>For <b id="pGuard">10</b> minutes after the window, no holder can pass <b id="pMax">2</b>% of supply and every holder waits <b id="pCool">3</b>s between trades. Bundles and sniper loops run into a wall.</p></div>
+      <div class="row"><span class="n">04</span><h3>Shielded liquidity</h3><p>Ghosts trade, launch and withdraw on their own. Withdrawals to a fresh address leave on a randomized delay, so timing doesn't link them back.</p></div>
+      <div class="row"><span class="n">05</span><h3>No mempool to front-run</h3><p>Trades fill against the curve in the order they arrive, with your own price limit. There's no public pending pool for anyone to sandwich.</p></div>
+      <div class="row"><span class="n">06</span><h3>The Trace scanner</h3><p>Paste any Solana wallet and see what an onlooker sees: who funded it, who it talks to, how exposed it is. Read straight from Solana.</p></div>
+    </div>
+  </div>
+  <div class="wrap sec">
+    <div class="eyebrow">Live</div>
+    <h2>Zero trace, <span class="it">in numbers.</span></h2>
+    <div class="figs"><div class="fig"><b id="fLaunch">0</b><span>launches</span></div><div class="fig"><b id="fStealth">0</b><span>stealth launches</span></div><div class="fig"><b id="fBlocked">0</b><span>snipes blocked</span></div><div class="fig"><b id="fPool">0</b><span>SOL shielded</span></div></div>
+    <div class="figs"><div class="fig"><b id="fFills">0</b><span>same-price window fills</span></div><div class="fig"><b id="fNotes">0</b><span>notes in the pool</span></div><div class="fig"><b id="fVol">0</b><span>SOL volume</span></div><div class="fig"><b>0</b><span>MEV extracted</span></div></div>
+  </div>
+  <div class="wrap sec">
+    <div class="eyebrow">$ZERO</div>
+    <h2>Your pass to the<br><span class="it">private side</span> of Solana.</h2>
+    <div class="rows">
+      <div class="row"><span class="n">→</span><h3>Free shielding</h3><p>Hold <b id="pPass">1,000,000</b> $ZERO and every note you shield skips the 0.5% Vault fee.</p></div>
+      <div class="row"><span class="n">→</span><h3>Half-price launches</h3><p>Wallet launches cost holders half the launch fee.</p></div>
+      <div class="row"><span class="n">→</span><h3>Fees buy the tools</h3><p>Launch, trade and Vault fees fund the infrastructure: more privacy tools, more anti-MEV protection, more launches that retail can actually win.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAUNCHES -->
+<section class="view" data-view="coins"><div class="wrap pane">
+  <div class="eyebrow">Launches</div><h1>On the <span class="it">board.</span></h1>
+  <div class="two" style="grid-template-columns:1.5fr .7fr">
+    <div><div class="li" style="cursor:default;color:var(--ghost);font-size:13px"><span>coin</span><span class="r">market cap</span><span class="r">state</span><span class="r hm">volume</span><span class="r hm">holders</span></div><div class="list" id="board"></div></div>
+    <div><div class="eyebrow">Activity</div><div class="feed" id="feed" style="margin-top:12px"></div></div>
+  </div>
+</div></section>
+
+<!-- COIN -->
+<section class="view" data-view="coin"><div class="wrap pane">
+  <div class="eyebrow" id="cMeta">—</div><h1 id="cName">—</h1>
+  <p class="note" id="cDesc" style="margin-top:14px;max-width:640px"></p>
+  <div class="two">
+    <div>
+      <div id="winBox"></div>
+      <canvas class="chart" id="cChart" style="margin-top:20px"></canvas>
+      <div class="figs" style="grid-template-columns:repeat(3,1fr)"><div class="fig"><b id="cMcap">—</b><span>market cap (SOL)</span></div><div class="fig"><b id="cVol">—</b><span>volume (SOL)</span></div><div class="fig"><b id="cHold">—</b><span>holders</span></div></div>
+      <div class="eyebrow" style="margin-top:44px">Trades <span class="g">· holders appear as tags, never wallets</span></div><div class="feed" id="cTrades" style="margin-top:10px"></div>
+    </div>
+    <div>
+      <div class="seg" id="asWho"><button data-as="w" class="on">From wallet</button><button data-as="g">From ghost</button></div>
+      <div class="seg" style="margin-top:22px" id="side"><button data-s="buy" class="on">Buy</button><button data-s="sell">Sell</button></div>
+      <div class="field" style="margin-top:22px"><label id="amtLbl">SOL</label><input class="inp" id="amt" inputmode="decimal" placeholder="0.10"></div>
+      <div class="field"><label>Price limit (max slippage)</label><div class="seg" id="slip"><button data-v="0.01">1%</button><button data-v="0.03" class="on">3%</button><button data-v="0.1">10%</button></div></div>
+      <button class="btn solid" style="width:100%;height:48px" id="trade">Buy</button>
+      <p class="note" id="tradeNote" style="margin-top:14px"></p>
+      <div class="kv" style="margin-top:26px"><span>Your balance</span><span id="myBal">—</span></div><div class="kv"><span>You hold</span><span id="myHold">—</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- LAUNCH -->
+<section class="view" data-view="launch"><div class="wrap pane">
+  <div class="eyebrow">Launch</div><h1>Launch it.<br><span class="it">Leave nothing behind.</span></h1>
+  <div class="two">
+    <div>
+      <div class="field"><label>Launch from</label><div class="seg" id="lFrom"><button data-as="g" class="on">Ghost (stealth)</button><button data-as="w">Wallet</button></div></div>
+      <div class="field"><label>Name</label><input class="inp" id="lName" maxlength="32" placeholder="Silent Frog"></div>
+      <div class="field"><label>Ticker</label><input class="inp" id="lTicker" maxlength="10" placeholder="HUSH"></div>
+      <div class="field"><label>One line about it</label><textarea class="inp" id="lDesc" maxlength="200" placeholder="what it is, in a sentence"></textarea></div>
+      <button class="btn solid" style="height:48px;padding:0 28px" id="lGo">Launch</button>
+      <p class="note" id="lNote" style="margin-top:14px"></p>
+    </div>
+    <div>
+      <div class="ghostbox"><div class="eyebrow">What happens</div>
+        <div class="kv"><span>Launch fee</span><span id="lFee">0.02 SOL</span></div>
+        <div class="kv"><span>Creator shown</span><span id="lShown">ghost</span></div>
+        <div class="kv"><span>Fair Window</span><span id="lWin">60s sealed, one price</span></div>
+        <div class="kv"><span>Window cap</span><span id="lCap">2 SOL per buyer</span></div>
+        <div class="kv"><span>Guard</span><span id="lGuard">10 min · 2% max · 3s cooldown</span></div>
+        <div class="kv"><span>Dev allocation</span><span>none</span></div>
+        <p class="note" style="margin-top:16px">A stealth launch spends from your ghost. Fund it in the Vault first: shield SOL from your wallet, wait out the mixing time, claim the note into the ghost.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- VAULT -->
+<section class="view" data-view="vault"><div class="wrap pane">
+  <div class="eyebrow">Vault</div><h1>Shield it.<br><span class="it">Claim it somewhere else.</span></h1>
+  <div class="two">
+    <div>
+      <div class="eyebrow">1 · Wallet</div>
+      <div class="kv"><span>Wallet balance</span><span id="vWal">—</span></div><div class="kv"><span>$ZERO pass</span><span id="vPass">—</span></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><input class="inp" id="depAmt" inputmode="decimal" placeholder="SOL to deposit" style="flex:1;min-width:150px"><button class="btn" id="depGo">Deposit</button></div>
+      <p class="note" id="depNote" style="margin-top:10px">Deposits are SOL transfers signed in your wallet and checked on Solana before they're credited.</p>
+      <div class="eyebrow" style="margin-top:46px">2 · Shield into a note</div>
+      <div class="seg" id="sizes" style="margin-top:12px"></div>
+      <p class="note" style="margin-top:12px" id="shieldInfo"></p>
+      <button class="btn solid" style="margin-top:16px" id="shieldGo">Shield</button>
+      <div id="noteOut"></div>
+      <div class="eyebrow" style="margin-top:46px">Anonymity sets</div><div id="sets" style="margin-top:8px"></div>
+    </div>
+    <div>
+      <div class="eyebrow">3 · Ghost</div>
+      <div class="ghostbox" style="margin-top:12px">
+        <div class="kv"><span>Ghost</span><span class="mono reveal" id="gId">—</span></div>
+        <div class="kv"><span>Ghost balance</span><span id="gBal">—</span></div>
+        <div class="field" style="margin-top:20px"><label>Paste a note to claim it into this ghost</label><input class="inp mono" id="noteIn" placeholder="zt-0.5-…" style="font-size:14px"></div>
+        <button class="btn solid" id="claimGo">Claim</button>
+        <div class="field" style="margin-top:30px"><label>Withdraw from the ghost to any Solana address</label><input class="inp mono" id="wTo" placeholder="fresh address" style="font-size:14px"></div>
+        <div style="display:flex;gap:10px"><input class="inp" id="wAmt" inputmode="decimal" placeholder="SOL" style="flex:1"><button class="btn" id="wGo">Withdraw</button></div>
+        <p class="note" style="margin-top:10px">Leaves on a random 10 to 60 minute delay.</p>
+        <div id="gHold" style="margin-top:18px"></div>
+        <details style="margin-top:24px"><summary class="note" style="cursor:pointer">Ghost key: back it up or move it</summary>
+          <p class="note" style="margin-top:10px">This key is the ghost. It lives in this browser only. Anyone holding it controls the ghost's SOL and coins.</p>
+          <div class="secret reveal" id="gKey"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn thin" id="gCopy">Copy key</button><button class="btn thin" id="gImport">Import a key</button><button class="btn thin" id="gNew">New ghost</button></div>
+        </details>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- TRACE -->
+<section class="view" data-view="trace"><div class="wrap pane">
+  <div class="eyebrow">Trace scanner</div><h1>What does your<br>wallet <span class="it">give away?</span></h1>
+  <div style="display:flex;gap:12px;margin-top:40px;flex-wrap:wrap"><input class="inp mono" id="tAddr" placeholder="paste any Solana address" style="flex:1;min-width:240px;font-size:16px"><button class="btn solid" id="tGo">Scan</button></div>
+  <div id="tOut" style="margin-top:50px"></div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><div>ZeroTrace · $ZERO · Zero Trace. Zero Snipe.</div><div style="display:flex;gap:22px"><a href="/docs">Docs</a><a href="https://x.com/ZeroTraceSOL" target="_blank" rel="noopener">X</a><a href="#" id="themeBtn">Light / dark</a></div></div></footer>
+<div class="modal" id="wmodal"><div class="mcard"><h3>Connect</h3><p class="note">No Solana wallet in this browser. Open ZeroTrace inside Phantom to connect.</p><div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap"><a class="btn solid" id="phLink" href="#">Open in Phantom</a><button class="btn thin" onclick="document.getElementById('wmodal').classList.remove('on')">Close</button></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="/app.js"></script>
+</body></html>

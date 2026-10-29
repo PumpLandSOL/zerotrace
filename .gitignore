@@ -1,0 +1,5 @@
+node_modules/
+data.json
+_studio/frames-*/
+*.log
+data.dev.json

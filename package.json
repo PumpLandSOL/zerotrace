@@ -1,0 +1,9 @@
+{
+  "name": "zerotrace",
+  "version": "1.0.0",
+  "description": "ZeroTrace ($ZERO): the privacy launchpad and anti-sniper suite on Solana.",
+  "main": "server/index.js",
+  "scripts": { "start": "node server/index.js", "test": "node _studio/e2e.cjs" },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}
