@@ -139,3 +139,14 @@ ZeroTrace. Zero Trace. Zero Snipe.
 
 $ZERO
 ```
+
+### 12. Why pump.fun · media: `zerotrace-g08-pumpfun.png`
+```
+Why launch $ZERO on pump.fun?
+
+A privacy project can't start with a hidden bag.
+
+No presale, no VC round, no team allocation. Everyone buys the same curve from the same first block.
+
+Creator fees go straight into building ZeroTrace.
+```
