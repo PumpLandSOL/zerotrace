@@ -150,3 +150,14 @@ No presale, no VC round, no team allocation. Everyone buys the same curve from t
 
 Creator fees go straight into building ZeroTrace.
 ```
+
+### 13. Why ZeroTrace (video) · media: `zerotrace-why-18s.mp4`
+```
+Why is ZeroTrace needed?
+
+On Solana your wallet funds your deployer, bots own block zero, bundlers grab the supply, and retail buys the top.
+
+ZeroTrace launches from a ghost, opens with one sealed price, and guards the first 10 minutes.
+
+$ZERO
+```

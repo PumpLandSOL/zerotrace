@@ -66,5 +66,19 @@ async function vault(c) {
   show('c',t,10,13);$('c').style.transform='scale('+(1.05-.05*e((t-10)/1))+')';$('z').style.opacity=cl((t-13)/.5);$('z').style.filter='blur('+((1-cl((t-13)/.5))*10).toFixed(1)+'px)';};</script></body></html>`;
   await render(c, 'zerotrace-vault-16s', html, 16); }
 
+async function why(c) {
+  const P=[["Your wallet","funds your deployer. Anyone can follow it."],["Block zero","goes to bots before the chart even loads."],["Bundlers","take the supply in one transaction."],["Retail","buys the top of a chart that was sniped."]];
+  const html = HEAD + `<div class="s" id="a"><div class="eb">Why does ZeroTrace exist?</div><div class="h" style="font-size:150px;margin-top:30px">Launches on Solana<br>are <span class="it">rigged</span> by default.</div></div>
+  <div class="s" id="b"><div style="display:grid;gap:40px;text-align:left">${P.map(([a,b],i)=>`<div id="b${i}" style="opacity:0;display:flex;gap:40px;align-items:baseline"><span class="g" style="font-size:28px;width:50px">0${i+1}</span><span style="font-size:72px;font-weight:200;letter-spacing:-.03em;width:520px">${a}</span><span class="i2" style="font-size:34px">${b}</span></div>`).join("")}</div></div>
+  <div class="s" id="c"><div class="h" style="font-size:140px">Privacy and fairness<br>should not be <span class="it">optional.</span></div></div>
+  <div class="s" id="d"><div style="display:grid;gap:30px;text-align:left;font-size:44px">${[["Unlinked launches","the creator is a ghost"],["Fair Window","one price, sealed bids"],["Guard","2% cap, 3s cooldown"]].map(([a,b],i)=>`<div id="d${i}" style="opacity:0;display:flex;gap:40px;align-items:baseline"><span style="font-weight:600;width:480px">${a}</span><span class="i2" style="font-size:34px">${b}</span></div>`).join("")}</div></div>
+  ${END("Zero Trace.<br><span class=\"it\">Zero Snipe.</span>")}
+  <script>${JS}${TRAIL}window.__seek=(t)=>{trail(t,t<9?1:cl((10.5-t)/1.5));show("a",t,0,3.2);
+  show("b",t,3.2,9.4);for(let i=0;i<4;i++)$("b"+i).style.opacity=cl((t-3.5-i*1.2)/.4);
+  show("c",t,9.4,12.2);$("c").style.transform="scale("+(1.05-.05*e((t-9.4)/1))+")";
+  show("d",t,12.2,15.2);for(let i=0;i<3;i++)$("d"+i).style.opacity=cl((t-12.4-i*.5)/.35);
+  $("z").style.opacity=cl((t-15.2)/.5);$("z").style.filter="blur("+((1-cl((t-15.2)/.5))*10).toFixed(1)+"px)";};</script></body></html>`;
+  await render(c, "zerotrace-why-18s", html, 18); }
+
 (async () => { const only = process.argv[2]; const c = await open('about:blank', 1920, 1080, 9500 + Math.floor(Math.random() * 90));
-  if (!only || only === 'hype') await hype(c); if (!only || only === 'window') await windowVid(c); if (!only || only === 'vault') await vault(c); c.close(); process.exit(0); })();
+  if (!only || only === 'hype') await hype(c); if (!only || only === 'window') await windowVid(c); if (!only || only === 'vault') await vault(c); if (!only || only === "why") await why(c); c.close(); process.exit(0); })();
