@@ -2,6 +2,11 @@
 
 **Name:** ZeroTrace | $ZERO
 
+## Handle
+```
+@ZeroTracePad
+```
+
 ## Display name
 ```
 ZeroTrace | $ZERO
